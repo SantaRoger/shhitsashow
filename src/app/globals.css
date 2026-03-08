@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-blue: #3774C3;
+  --color-blue-dark: #2A5A9A;
+  --color-gold: #B8860B;
+  --color-gold-light: #D4A020;
+  --color-brown: #3E2215;
+  --color-brown-dark: #2A1A0E;
+  --color-green: #2D5A27;
+  --color-cream: #F2E4C8;
+  --color-cream-light: #FDF6E8;
+  --color-burgundy: #7B2D3B;
+  --color-gray: #6B5E4D;
+  --font-heading: var(--font-cinzel-decorative);
+  --font-body: var(--font-lora);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-brown);
+  font-family: var(--font-body), Georgia, serif;
+}
+
+/* Fatten Cinzel Decorative's thin strokes for legibility */
+.font-heading {
+  -webkit-text-stroke: 0.3px currentColor;
+  paint-order: stroke fill;
+}
+
+/* Wood grain texture overlay */
+.wood-grain {
+  position: relative;
+}
+
+.wood-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 30px,
+    rgba(0, 0, 0, 0.03) 30px,
+    rgba(0, 0, 0, 0.03) 31px
+  ),
+  repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 8px,
+    rgba(0, 0, 0, 0.015) 8px,
+    rgba(0, 0, 0, 0.015) 9px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wood-grain > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Hero A — floating gold particles */
+.hero-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--color-gold);
+  opacity: 0;
+  animation: particle-float 6s ease-in-out infinite;
+}
+
+@keyframes particle-float {
+  0% { opacity: 0; transform: translateY(100vh) scale(0); }
+  20% { opacity: 0.6; }
+  80% { opacity: 0.3; }
+  100% { opacity: 0; transform: translateY(-20vh) scale(1); }
+}
+
+/* Hero A — gold shimmer on title accent */
+.hero-shimmer {
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.3); text-shadow: 0 0 20px rgba(212, 160, 32, 0.5); }
+}
+
+/* Parchment texture */
+.parchment {
+  background-color: var(--color-cream);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(92, 61, 30, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(92, 61, 30, 0.04) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 80%, rgba(92, 61, 30, 0.02) 0%, transparent 60%);
 }
