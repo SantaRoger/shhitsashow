@@ -21,7 +21,7 @@ export default function Footer() {
             &ldquo;Why poop alone when you can poop with a friend?&rdquo;
           </p>
 
-          <div className="text-right text-sm text-brown/60 space-y-1">
+          <div className="text-center lg:text-right text-sm text-brown/60 space-y-1">
             <ObfuscatedLink
               encodedHref={EMAIL_B64}
               encodedText={EMAIL_DISPLAY_B64}
