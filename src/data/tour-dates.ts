@@ -19,6 +19,12 @@ export const tourDates: TourDate[] = [
     recurring: null,
   },
   {
+    event: "Stall #3",
+    dates: "Tuesday Morning After Breakfast",
+    location: "",
+    recurring: null,
+  },
+  {
     event: "Kentucky Highland Festival",
     dates: "May 29 - July 19, 2026",
     location: "Eminence, KY",
