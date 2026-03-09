@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cinzel_Decorative, Lora } from "next/font/google";
+import Navbar from "@/components/Navbar";
 import "./globals.css";
 
 const cinzel = Cinzel_Decorative({
@@ -39,6 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${cinzel.variable} ${lora.variable} antialiased`}>
+        <Navbar />
         {children}
       </body>
     </html>

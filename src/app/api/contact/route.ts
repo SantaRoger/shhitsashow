@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { saveContact } from "@/lib/db";
+import { sendBookingNotification } from "@/lib/ses";
 
 export async function POST(request: Request) {
   try {
@@ -6,14 +8,13 @@ export async function POST(request: Request) {
 
     const { name, faire, email, message } = body;
 
-    if (!name || !faire || !email || !message) {
+    if (!name || !email || !message) {
       return NextResponse.json(
-        { error: "All fields are required" },
+        { error: "Name, email, and message are required" },
         { status: 400 }
       );
     }
 
-    // Basic email validation
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json(
         { error: "Invalid email address" },
@@ -21,13 +22,31 @@ export async function POST(request: Request) {
       );
     }
 
-    // Log the contact submission (swap with email service in production)
+    const contactData = { name, faire: faire || undefined, email, message };
+
+    // Persist to SQLite
+    saveContact(contactData);
+
     console.log("=== New Booking Inquiry ===");
     console.log(`Name: ${name}`);
-    console.log(`Faire: ${faire}`);
+    console.log(`Faire: ${faire || "(not specified)"}`);
     console.log(`Email: ${email}`);
     console.log(`Message: ${message}`);
     console.log("===========================");
+
+    // Send notification email to owner
+    try {
+      await sendBookingNotification(contactData);
+    } catch (sesError) {
+      console.error("SES email failed (submission still saved):", sesError);
+    }
+
+    // Uncomment when ready to send confirmation to customer
+    // try {
+    //   await sendCustomerConfirmation(contactData);
+    // } catch (confirmError) {
+    //   console.error("Customer confirmation email failed:", confirmError);
+    // }
 
     return NextResponse.json({ success: true });
   } catch {

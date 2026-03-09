@@ -2,6 +2,8 @@
 
 import { useState, FormEvent } from "react";
 import ScrollReveal from "./ScrollReveal";
+import ObfuscatedLink from "./ObfuscatedLink";
+import { EMAIL_B64, EMAIL_DISPLAY_B64, PHONE_B64, PHONE_DISPLAY_B64 } from "@/utils/encode";
 
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -54,20 +56,24 @@ export default function Contact() {
         {/* Contact info */}
         <ScrollReveal delay={0.15}>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 mb-14">
-            <a
-              href="mailto:nel@shhitsa.show"
-              className="text-gold hover:text-gold/80 text-lg transition-colors flex items-center gap-2"
-            >
+            <span className="flex items-center gap-2 text-gold text-lg">
               <span className="text-2xl">&#x1F4E7;</span>
-              nel@shhitsa.show
-            </a>
-            <a
-              href="tel:+12483031126"
-              className="text-gold hover:text-gold/80 text-lg transition-colors flex items-center gap-2"
-            >
+              <ObfuscatedLink
+                encodedHref={EMAIL_B64}
+                encodedText={EMAIL_DISPLAY_B64}
+                prefix="mailto:"
+                className="hover:text-gold/80 transition-colors"
+              />
+            </span>
+            <span className="flex items-center gap-2 text-gold text-lg">
               <span className="text-2xl">&#x1F4DE;</span>
-              248-303-1126
-            </a>
+              <ObfuscatedLink
+                encodedHref={PHONE_B64}
+                encodedText={PHONE_DISPLAY_B64}
+                prefix="tel:"
+                className="hover:text-gold/80 transition-colors"
+              />
+            </span>
             <a
               href="https://shhitsa.show"
               className="text-gold hover:text-gold/80 text-lg transition-colors flex items-center gap-2"
@@ -154,7 +160,7 @@ export default function Contact() {
             )}
             {status === "error" && (
               <p className="text-cream text-center font-medium">
-                Something went wrong. Try emailing us directly at nel@shhitsa.show.
+                Something went wrong. Try emailing us directly.
               </p>
             )}
           </form>

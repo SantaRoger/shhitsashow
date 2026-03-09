@@ -1,6 +1,9 @@
 #!/bin/bash
 cd "$(dirname "$0")"
 
+echo "Installing dependencies..."
+npm install || { echo "Installation failed"; exit 1; }
+
 echo "Building..."
 npm run build || { echo "Build failed"; exit 1; }
 

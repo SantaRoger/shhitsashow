@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+import ObfuscatedLink from "./ObfuscatedLink";
+import { EMAIL_B64, EMAIL_DISPLAY_B64, PHONE_B64, PHONE_DISPLAY_B64 } from "@/utils/encode";
 
 export default function Footer() {
   return (
@@ -18,18 +22,18 @@ export default function Footer() {
           </p>
 
           <div className="text-right text-sm text-brown/60 space-y-1">
-            <a
-              href="mailto:nel@shhitsa.show"
+            <ObfuscatedLink
+              encodedHref={EMAIL_B64}
+              encodedText={EMAIL_DISPLAY_B64}
+              prefix="mailto:"
               className="block hover:text-gold transition-colors"
-            >
-              nel@shhitsa.show
-            </a>
-            <a
-              href="tel:+12483031126"
+            />
+            <ObfuscatedLink
+              encodedHref={PHONE_B64}
+              encodedText={PHONE_DISPLAY_B64}
+              prefix="tel:"
               className="block hover:text-gold transition-colors"
-            >
-              248-303-1126
-            </a>
+            />
           </div>
         </div>
 

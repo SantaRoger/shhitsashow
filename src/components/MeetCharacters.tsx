@@ -5,7 +5,7 @@ import ScrollReveal from "./ScrollReveal";
 
 export default function MeetCharacters() {
   return (
-    <section className="parchment py-20 px-6">
+    <section id="characters" className="parchment py-20 px-6">
       <div className="container mx-auto max-w-6xl">
         <ScrollReveal>
           <h2 className="font-heading text-3xl sm:text-4xl text-brown text-center mb-14">
