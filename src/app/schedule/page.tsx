@@ -7,12 +7,53 @@ export const metadata: Metadata = {
   title: "Tour Schedule | Shh It's A Show",
   description:
     "Catch Shh It's A Show at a Renaissance faire near you. See our upcoming tour dates and locations.",
+  openGraph: {
+    title: "Tour Schedule | Shh It's A Show",
+    description:
+      "Catch Shh It's A Show at a Renaissance faire near you. See our upcoming tour dates and locations.",
+    url: "https://shhitsa.show/schedule",
+    images: [{ url: "/images/logo.png", width: 1000, height: 1000 }],
+  },
+  twitter: {
+    card: "summary",
+    title: "Tour Schedule | Shh It's A Show",
+    description:
+      "Catch Shh It's A Show at a Renaissance faire near you. See our upcoming tour dates and locations.",
+  },
 };
+
+const eventsJsonLd = tourDates.map((date) => ({
+  "@context": "https://schema.org",
+  "@type": "Event",
+  name: `Shh It's A Show at ${date.event}`,
+  description: `Catch Shh It's A Show performing at ${date.event} in ${date.location}.`,
+  startDate: date.dates,
+  location: {
+    "@type": "Place",
+    name: date.event,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: date.location,
+    },
+  },
+  performer: {
+    "@type": "PerformingGroup",
+    name: "Shh It's A Show",
+  },
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  eventStatus: "https://schema.org/EventScheduled",
+}));
 
 export default function SchedulePage() {
   return (
     <>
       <main>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(eventsJsonLd),
+          }}
+        />
         {/* Hero banner */}
         <section
           className="pt-28 pb-16 px-6"

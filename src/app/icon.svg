@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Roof -->
+  <polygon points="16,2 4,12 28,12" fill="#C8923A"/>
+  <polygon points="16,2 4,12 28,12" fill="url(#roofShade)"/>
+  <defs>
+    <linearGradient id="roofShade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D4A040"/>
+      <stop offset="100%" stop-color="#A07828"/>
+    </linearGradient>
+    <linearGradient id="wallGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3774C3"/>
+      <stop offset="50%" stop-color="#4A8AD6"/>
+      <stop offset="100%" stop-color="#3774C3"/>
+    </linearGradient>
+  </defs>
+  <!-- Roof ridge -->
+  <line x1="16" y1="2" x2="16" y2="5" stroke="#8B6914" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- Roof trim -->
+  <line x1="4" y1="12" x2="28" y2="12" stroke="#8B6914" stroke-width="1"/>
+  <!-- Main body -->
+  <rect x="6" y="12" width="20" height="17" rx="1" fill="url(#wallGrad)"/>
+  <!-- Wood plank lines -->
+  <line x1="12" y1="12" x2="12" y2="29" stroke="#2A5A9A" stroke-width="0.5" opacity="0.5"/>
+  <line x1="20" y1="12" x2="20" y2="29" stroke="#2A5A9A" stroke-width="0.5" opacity="0.5"/>
+  <!-- Door frame -->
+  <rect x="10" y="15" width="12" height="14" rx="0.5" fill="#2A5A9A" stroke="#C8923A" stroke-width="1"/>
+  <!-- Moon cutout -->
+  <circle cx="16" cy="19" r="2" fill="#1A3D6E"/>
+  <circle cx="17" cy="18.5" r="1.8" fill="#2A5A9A"/>
+  <!-- Door handle -->
+  <circle cx="19" cy="23" r="0.8" fill="#C8923A"/>
+  <!-- Base trim -->
+  <rect x="5" y="28" width="22" height="2" rx="0.5" fill="#A07828"/>
+</svg>
