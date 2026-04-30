@@ -30,4 +30,10 @@ export const tourDates: TourDate[] = [
     location: "Eminence, KY",
     recurring: "Every Weekend",
   },
+  {
+    event: "Arkansas Renaissance Festival",
+    dates: "August 29 - October 4, 2026",
+    location: "Vernon, AR",
+    recurring: "Every Weekend",
+  },
 ];
