@@ -1,12 +1,19 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import ScrollReveal from "./ScrollReveal";
 import ObfuscatedLink from "./ObfuscatedLink";
-import { EMAIL_B64, EMAIL_DISPLAY_B64, PHONE_B64, PHONE_DISPLAY_B64 } from "@/utils/encode";
+import { Envelope, Phone, Globe } from "./Icons";
+import {
+  EMAIL_B64,
+  EMAIL_DISPLAY_B64,
+  PHONE_B64,
+  PHONE_DISPLAY_B64,
+} from "@/utils/encode";
 
 export default function Contact() {
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle"
+  );
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -38,143 +45,127 @@ export default function Contact() {
     }
   }
 
+  const inputClass =
+    "w-full rounded-md border border-brown/25 bg-cream-light px-4 py-3 text-brown placeholder:text-brown/40 focus:border-gold focus:outline-none transition-colors";
+
   return (
-    <section id="contact" className="bg-brown-dark py-20 px-6">
-      <div className="container mx-auto max-w-5xl">
-        <ScrollReveal>
-          <div className="text-center mb-12">
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl text-gold mb-4">
-              Ready to Take the Plunge?
-            </h2>
-            <p className="text-cream/70 max-w-2xl mx-auto">
-              We&apos;d love to bring Shh It&apos;s A Show to your faire. <br />
-              Reach out; we don&apos;t bite. (Stu might, but only if provoked.)
-            </p>
-          </div>
-        </ScrollReveal>
+    <section id="contact" className="parchment px-6 py-16 anchor-offset">
+      <div className="container mx-auto max-w-3xl">
+        <div className="text-center">
+          <h2 className="font-heading text-3xl text-brown sm:text-4xl">
+            Send Us Your Dates
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-brown/80">
+            Tell us about your faire and your dates. We do not bite. (Stu might,
+            but only if provoked.)
+          </p>
+        </div>
 
         {/* Contact info */}
-        <ScrollReveal delay={0.15}>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 mb-14">
-            <span className="flex items-center gap-2 text-gold text-lg">
-              <span className="text-2xl">&#x1F4E7;</span>
-              <ObfuscatedLink
-                encodedHref={EMAIL_B64}
-                encodedText={EMAIL_DISPLAY_B64}
-                prefix="mailto:"
-                className="hover:text-gold/80 transition-colors"
-              />
-            </span>
-            <span className="flex items-center gap-2 text-gold text-lg">
-              <span className="text-2xl">&#x1F4DE;</span>
-              <ObfuscatedLink
-                encodedHref={PHONE_B64}
-                encodedText={PHONE_DISPLAY_B64}
-                prefix="tel:"
-                className="hover:text-gold/80 transition-colors"
-              />
-            </span>
-            <a
-              href="https://shhitsa.show"
-              className="text-gold hover:text-gold/80 text-lg transition-colors flex items-center gap-2"
-            >
-              <span className="text-2xl">&#x1F310;</span>
-              shhitsa.show
-            </a>
-          </div>
-        </ScrollReveal>
+        <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-8">
+          <span className="flex items-center gap-2 text-brown">
+            <Envelope className="h-5 w-5 text-gold" />
+            <ObfuscatedLink
+              encodedHref={EMAIL_B64}
+              encodedText={EMAIL_DISPLAY_B64}
+              prefix="mailto:"
+              className="hover:text-gold transition-colors"
+            />
+          </span>
+          <span className="flex items-center gap-2 text-brown">
+            <Phone className="h-5 w-5 text-gold" />
+            <ObfuscatedLink
+              encodedHref={PHONE_B64}
+              encodedText={PHONE_DISPLAY_B64}
+              prefix="tel:"
+              className="hover:text-gold transition-colors"
+            />
+          </span>
+          <span className="flex items-center gap-2 text-brown">
+            <Globe className="h-5 w-5 text-gold" />
+            shhitsa.show
+          </span>
+        </div>
 
-        {/* Contact form */}
-        <ScrollReveal delay={0.3}>
-          <form
-            onSubmit={handleSubmit}
-            className="max-w-2xl mx-auto bg-brown/30 rounded-xl p-8 space-y-5"
-          >
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div>
-                <label htmlFor="name" className="block text-cream/80 text-sm mb-1">
-                  Your Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  className="w-full bg-cream/10 border border-cream/20 rounded-md px-4 py-3 text-cream placeholder:text-cream/40 focus:outline-none focus:border-gold transition-colors"
-                  placeholder="Sir Lancelot"
-                />
-              </div>
-              <div>
-                <label htmlFor="faire" className="block text-cream/80 text-sm mb-1">
-                  Faire Name
-                </label>
-                <input
-                  type="text"
-                  id="faire"
-                  name="faire"
-                  // required
-                  className="w-full bg-cream/10 border border-cream/20 rounded-md px-4 py-3 text-cream placeholder:text-cream/40 focus:outline-none focus:border-gold transition-colors"
-                  placeholder="The Enchanted Kingdom Faire"
-                />
-              </div>
-            </div>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="sketch-card mt-8 space-y-5 p-8">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div>
-              <label htmlFor="email" className="block text-cream/80 text-sm mb-1">
-                Email
+              <label htmlFor="name" className="mb-1 block text-sm text-brown/80">
+                Your Name
               </label>
               <input
-                type="email"
-                id="email"
-                name="email"
+                type="text"
+                id="name"
+                name="name"
                 required
-                className="w-full bg-cream/10 border border-cream/20 rounded-md px-4 py-3 text-cream placeholder:text-cream/40 focus:outline-none focus:border-gold transition-colors"
-                placeholder="lancelot@roundtable.com"
+                className={inputClass}
+                placeholder="Sir Lancelot"
               />
             </div>
             <div>
-              <label htmlFor="message" className="block text-cream/80 text-sm mb-1">
-                Message
+              <label htmlFor="faire" className="mb-1 block text-sm text-brown/80">
+                Faire Name
               </label>
-              <textarea
-                id="message"
-                name="message"
-                required
-                rows={4}
-                className="w-full bg-cream/10 border border-cream/20 rounded-md px-4 py-3 text-cream placeholder:text-cream/40 focus:outline-none focus:border-gold transition-colors resize-none"
-                placeholder="Tell us about your event, dates, and anything else we should know..."
+              <input
+                type="text"
+                id="faire"
+                name="faire"
+                className={inputClass}
+                placeholder="The Enchanted Kingdom Faire"
               />
             </div>
-            <div className="text-center pt-2">
-              <button
-                type="submit"
-                disabled={status === "sending"}
-                className="inline-block bg-gold text-brown font-heading font-bold px-8 py-4 text-lg rounded-md hover:bg-gold/90 hover:shadow-lg hover:shadow-gold/25 transition-all duration-300 disabled:opacity-50"
-              >
-                {status === "sending" ? "Flushing..." : "Flush It Our Way!"}
-              </button>
-            </div>
-            {status === "sent" && (
-              <p className="text-gold-light text-center font-medium">
-                Message sent! We&apos;ll be in touch faster than Stu can crawl out of a toilet.
-              </p>
-            )}
-            {status === "error" && (
-              <p className="text-cream text-center font-medium">
-                Something went wrong. Try emailing us directly.
-              </p>
-            )}
-          </form>
-        </ScrollReveal>
-
-        {/* Pricing callout */}
-        <ScrollReveal delay={0.4}>
-          <div className="max-w-2xl mx-auto mt-10 bg-gold/10 border border-gold/30 rounded-lg p-6 text-center">
-            <p className="text-gold font-heading text-lg">
-              Tailored performance scheudle for your faire, opening gate character
-              interaction, and pub sing participation.
-            </p>
           </div>
-        </ScrollReveal>
+          <div>
+            <label htmlFor="email" className="mb-1 block text-sm text-brown/80">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              className={inputClass}
+              placeholder="lancelot@roundtable.com"
+            />
+          </div>
+          <div>
+            <label htmlFor="message" className="mb-1 block text-sm text-brown/80">
+              Message
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows={4}
+              className={`${inputClass} resize-none`}
+              placeholder="Tell us about your event, dates, and anything else we should know..."
+            />
+          </div>
+          <div className="text-center">
+            <button
+              type="submit"
+              disabled={status === "sending"}
+              className="inline-block bg-gold px-8 py-4 font-heading text-lg font-bold text-brown transition-colors hover:bg-gold-light disabled:opacity-50"
+              style={{
+                borderRadius: "255px 15px 225px 15px / 15px 225px 15px 255px",
+              }}
+            >
+              {status === "sending" ? "Flushing..." : "Flush It Our Way!"}
+            </button>
+          </div>
+          {status === "sent" && (
+            <p className="text-center font-medium text-green">
+              Message sent. We will be in touch faster than Stu can crawl out of
+              a toilet.
+            </p>
+          )}
+          {status === "error" && (
+            <p className="text-center font-medium text-burgundy">
+              Something went wrong. Please try emailing us directly.
+            </p>
+          )}
+        </form>
       </div>
     </section>
   );

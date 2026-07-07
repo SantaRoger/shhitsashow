@@ -1,137 +1,166 @@
-import { tourDates } from "@/data/tour-dates";
-import Link from "next/link";
-import Footer from "@/components/Footer";
 import type { Metadata } from "next";
+import { tourDates, type TourDate } from "@/data/tour-dates";
+import PageBanner from "@/components/PageBanner";
+import CtaBand from "@/components/CtaBand";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbSchema } from "@/lib/schema";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Tour Schedule | Shh It's A Show",
+  title: "Tour Schedule",
   description:
-    "Catch Shh It's A Show at a Renaissance faire near you. See our upcoming tour dates and locations.",
+    "Where to catch Shh It's A Show this season. Upcoming Renaissance faire and festival dates for the outhouse comedy act.",
+  alternates: { canonical: "/schedule" },
   openGraph: {
     title: "Tour Schedule | Shh It's A Show",
     description:
-      "Catch Shh It's A Show at a Renaissance faire near you. See our upcoming tour dates and locations.",
+      "Catch the outhouse comedy at a Renaissance faire near you. See our upcoming tour dates.",
     url: "https://shhitsa.show/schedule",
-    images: [{ url: "/images/logo.png", width: 1000, height: 1000 }],
-  },
-  twitter: {
-    card: "summary",
-    title: "Tour Schedule | Shh It's A Show",
-    description:
-      "Catch Shh It's A Show at a Renaissance faire near you. See our upcoming tour dates and locations.",
   },
 };
 
-const eventsJsonLd = tourDates.map((date) => ({
-  "@context": "https://schema.org",
-  "@type": "Event",
-  name: `Shh It's A Show at ${date.event}`,
-  description: `Catch Shh It's A Show performing at ${date.event} in ${date.location}.`,
-  startDate: date.dates,
-  location: {
-    "@type": "Place",
-    name: date.event,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: date.location,
+// Split dated stops into upcoming vs already-played using the build date.
+// (The page is statically generated, so the split refreshes on each deploy.)
+// Undated gag entries have no end date, so they ride along as perennial fixtures.
+const todayISO = new Date().toISOString().slice(0, 10);
+const endOf = (d: TourDate) => d.endDate || d.startDate;
+const isPast = (d: TourDate) => endOf(d) !== "" && endOf(d) < todayISO;
+
+const upcoming = tourDates
+  .filter((d) => !isPast(d))
+  .sort((a, b) => (a.startDate || "9999").localeCompare(b.startDate || "9999"));
+const past = tourDates
+  .filter(isPast)
+  .sort((a, b) => endOf(b).localeCompare(endOf(a)));
+
+// Only real, upcoming, dated stops become Event structured data. The gag entry
+// and already-played dates are deliberately excluded.
+const eventsJsonLd = upcoming
+  .filter((d) => !d.isJoke && d.startDate)
+  .map((date) => ({
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: `Shh It's A Show at ${date.event}`,
+    description: `Catch Shh It's A Show, a Renaissance faire comedy act, performing at ${date.event} in ${date.location}.`,
+    startDate: date.startDate,
+    ...(date.endDate ? { endDate: date.endDate } : {}),
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
+    url: `${site.url}/schedule`,
+    location: {
+      "@type": "Place",
+      name: date.event,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: date.city ?? date.location,
+        ...(date.region ? { addressRegion: date.region } : {}),
+        addressCountry: "US",
+      },
     },
-  },
-  performer: {
-    "@type": "PerformingGroup",
-    name: "Shh It's A Show",
-  },
-  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-  eventStatus: "https://schema.org/EventScheduled",
-}));
+    performer: { "@type": "PerformingGroup", name: site.name },
+    organizer: { "@type": "PerformingGroup", name: site.name },
+  }));
 
 export default function SchedulePage() {
   return (
     <>
-      <main>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(eventsJsonLd),
-          }}
-        />
-        {/* Hero banner */}
-        <section
-          className="pt-28 pb-16 px-6"
-          style={{
-            background:
-              "linear-gradient(175deg, #3E2215 0%, #1A0E06 60%, #2A1A0E 100%)",
-          }}
-        >
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl text-gold mb-4">
-              Tour Schedule
-            </h1>
-            <p className="text-cream/70 text-lg sm:text-xl italic">
-              Where to catch us this season
-            </p>
-          </div>
-        </section>
+      <JsonLd
+        data={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Schedule", path: "/schedule" },
+          ]),
+          ...eventsJsonLd,
+        ]}
+      />
 
-        {/* Tour dates */}
-        <section className="parchment py-16 px-6">
-          <div className="max-w-3xl mx-auto space-y-10">
-            {tourDates.map((date) => (
-              <div
-                key={date.event}
-                className="group hover:translate-y-[-2px] transition-transform duration-300"
-              >
-                {/* Date rendered large, like a playbill date */}
-                <p className="text-gold font-heading text-base sm:text-lg tracking-wide mb-2">
-                  {date.dates}
-                  {date.recurring && (
-                    <span className="ml-3 text-sm text-burgundy italic tracking-normal">
-                      — {date.recurring}
-                    </span>
-                  )}
-                </p>
+      <PageBanner
+        eyebrow="Tour Schedule"
+        title="Where to Catch Us"
+        subtitle="Come heckle Stu in person this season."
+      />
 
-                {/* Event name — big and dominant */}
-                <h2 className="font-heading text-2xl sm:text-3xl text-brown leading-tight mb-1">
-                  {date.event}
-                </h2>
-
-                {/* Location */}
-                <p className="text-brown/60 text-sm sm:text-base">
-                  {date.location}
-                </p>
-
-                {/* Decorative separator */}
+      {/* Upcoming — the main event, pinned up as full cards */}
+      <section className="parchment px-6 py-16">
+        <div className="mx-auto max-w-3xl">
+          <h2 className="font-heading text-3xl text-brown">Coming Up</h2>
+          <p className="mt-2 font-hand text-2xl text-brown/70">
+            where the outhouse lands next
+          </p>
+          <div className="mt-8 space-y-5">
+            {upcoming.length === 0 ? (
+              <p className="font-hand text-xl text-brown/60">
+                Nothing on the books just yet — check back soon, or book us
+                yourself.
+              </p>
+            ) : (
+              upcoming.map((date) => (
                 <div
-                  className="mt-6 h-px w-24 opacity-30"
-                  style={{
-                    background:
-                      "linear-gradient(to right, var(--color-gold), transparent)",
-                  }}
-                />
-              </div>
-            ))}
+                  key={date.event}
+                  className={`sketch-card p-6 ${date.isJoke ? "opacity-80" : ""}`}
+                >
+                  <p className="font-hand text-xl text-burgundy">
+                    {date.dates}
+                    {date.recurring && (
+                      <span className="ml-2 text-base text-brown/60">
+                        ({date.recurring})
+                      </span>
+                    )}
+                  </p>
+                  <h3 className="font-heading text-2xl text-brown leading-tight">
+                    {date.event}
+                  </h3>
+                  {date.location ? (
+                    <p className="text-brown/60">{date.location}</p>
+                  ) : (
+                    date.isJoke && (
+                      <p className="font-hand text-lg text-brown/50">
+                        for the regulars
+                      </p>
+                    )
+                  )}
+                </div>
+              ))
+            )}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Bottom CTA */}
-        <section className="bg-brown-dark py-16 px-6">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="font-heading text-2xl sm:text-3xl text-gold mb-4">
-              Want us at your faire?
+      {/* Where we've been — a darker archive band, compact rows */}
+      {past.length > 0 && (
+        <section className="wood px-6 py-16">
+          <div className="mx-auto max-w-3xl">
+            <h2 className="font-heading text-3xl text-gold-light">
+              Where We&apos;ve Been
             </h2>
-            <p className="text-cream/70 mb-8">
-              We&apos;d love to bring the outhouse to your event. Get in touch!
+            <p className="mt-2 font-hand text-xl text-cream/70">
+              stops already in the books
             </p>
-            <Link
-              href="/#contact"
-              className="inline-block bg-gold text-brown font-heading font-bold px-8 py-4 text-lg rounded-md hover:bg-gold/90 hover:shadow-lg hover:shadow-gold/25 transition-all duration-300"
-            >
-              Book the Show
-            </Link>
+            <ul className="mt-8 border-y border-cream/15 divide-y divide-cream/15">
+              {past.map((date) => (
+                <li
+                  key={date.event}
+                  className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 py-4"
+                >
+                  <div>
+                    <p className="font-heading text-xl text-cream-light leading-tight">
+                      {date.event}
+                    </p>
+                    {date.location && (
+                      <p className="text-sm text-cream/60">{date.location}</p>
+                    )}
+                  </div>
+                  <p className="font-hand text-lg text-gold-light/90">
+                    {date.dates}
+                  </p>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
-      </main>
-      <Footer />
+      )}
+
+      <CtaBand />
     </>
   );
 }

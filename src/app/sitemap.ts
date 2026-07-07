@@ -1,18 +1,25 @@
 import type { MetadataRoute } from "next";
 
+const BASE = "https://shhitsa.show";
+
+// Bump when content meaningfully changes so lastModified is honest rather than
+// always "now".
+const LAST_MODIFIED = new Date("2026-07-06");
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: "https://shhitsa.show",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1.0,
-    },
-    {
-      url: "https://shhitsa.show/schedule",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
+  const routes: { path: string; priority: number }[] = [
+    { path: "/", priority: 1.0 },
+    { path: "/book", priority: 0.9 },
+    { path: "/the-show", priority: 0.8 },
+    { path: "/the-cast", priority: 0.7 },
+    { path: "/faq", priority: 0.7 },
+    { path: "/schedule", priority: 0.6 },
   ];
+
+  return routes.map(({ path, priority }) => ({
+    url: `${BASE}${path}`,
+    lastModified: LAST_MODIFIED,
+    changeFrequency: "monthly",
+    priority,
+  }));
 }
