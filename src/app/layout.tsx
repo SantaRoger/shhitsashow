@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Cinzel_Decorative, Lora } from "next/font/google";
+import { Cinzel_Decorative, Lora, Caveat } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const cinzel = Cinzel_Decorative({
@@ -18,42 +19,59 @@ const lora = Lora({
   display: "swap",
 });
 
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://shhitsa.show"),
-  title: "Shh It's A Show | Renaissance Faire Comedy Act",
+  title: {
+    default: "Shh It's A Show | Renaissance Faire Comedy Act",
+    template: "%s | Shh It's A Show",
+  },
   description:
-    "A 30-minute outhouse comedy experience for Renaissance faires. Featuring Captain Shh-nel and Stu of the Loo. Book us for your faire today!",
+    "Shh It's A Show is a 30-minute outdoor comedy act for Renaissance faires, built around a theatrical outhouse and starring Captain Shh-nel and Stu of the Loo.",
   keywords: [
-    "renaissance faire",
-    "comedy act",
+    "renaissance faire comedy act",
     "renaissance festival entertainment",
-    "outhouse show",
-    "faire comedy",
+    "faire performers for hire",
+    "book renaissance faire entertainment",
+    "outhouse comedy show",
+    "family variety show renaissance faire",
     "Captain Shh-nel",
     "Stu of the Loo",
-    "renaissance faire booking",
-    "variety show",
     "plunger comedy",
-    "faire performers",
+    "faire walkabout entertainment",
   ],
   authors: [{ name: "Erica Minton" }, { name: "Phoenix Minton" }],
   creator: "Shh It's A Show",
   publisher: "Shh It's A Show",
+  alternates: { canonical: "/" },
   openGraph: {
     title: "Shh It's A Show | Renaissance Faire Comedy Act",
     description:
-      "30 minutes. One outhouse. Zero dignity. Maximum laughs. Book the most unique comedy act at your Renaissance faire.",
+      "A 30-minute outdoor comedy act built around a theatrical outhouse. The most unusual booking at your Renaissance faire.",
     type: "website",
     url: "https://shhitsa.show",
     siteName: "Shh It's A Show",
     locale: "en_US",
-    images: [{ url: "/images/logo.png", width: 1000, height: 1000 }],
+    images: [
+      {
+        url: "/images/logo.png",
+        width: 1200,
+        height: 1200,
+        alt: "Captain Shh-nel and Stu of the Loo beside their blue outhouse",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Shh It's A Show | Renaissance Faire Comedy Act",
     description:
-      "30 minutes. One outhouse. Zero dignity. Maximum laughs. Book the most unique comedy act at your Renaissance faire.",
+      "A 30-minute outdoor comedy act built around a theatrical outhouse. The most unusual booking at your Renaissance faire.",
     images: ["/images/logo.png"],
   },
 };
@@ -72,9 +90,12 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
       </head>
-      <body className={`${cinzel.variable} ${lora.variable} antialiased`}>
+      <body
+        className={`${cinzel.variable} ${lora.variable} ${caveat.variable} antialiased`}
+      >
         <Navbar />
-        {children}
+        <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

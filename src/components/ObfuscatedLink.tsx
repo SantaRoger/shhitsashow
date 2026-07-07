@@ -22,6 +22,10 @@ export default function ObfuscatedLink({
   );
 
   useEffect(() => {
+    // Decode only on the client after mount, so the real address never appears
+    // in the server-rendered HTML (anti-scrape). This deliberate mount-time
+    // setState is the entire purpose of the component.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDecoded({
       href: prefix + atob(encodedHref),
       text: atob(encodedText),

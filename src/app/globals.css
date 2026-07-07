@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-blue: #3774C3;
-  --color-blue-dark: #2A5A9A;
+  --color-blue: #0D62D1;
+  --color-blue-dark: #0A4AA0;
   --color-gold: #B8860B;
   --color-gold-light: #D4A020;
   --color-brown: #3E2215;
@@ -14,6 +14,7 @@
   --color-gray: #6B5E4D;
   --font-heading: var(--font-cinzel-decorative);
   --font-body: var(--font-lora);
+  --font-hand: var(--font-caveat);
 }
 
 html {
@@ -26,13 +27,52 @@ body {
   font-family: var(--font-body), Georgia, serif;
 }
 
-/* Fatten Cinzel Decorative's thin strokes for legibility */
+/* Offset in-page anchor targets so the sticky navbar doesn't cover them */
+section[id],
+[id].anchor-offset {
+  scroll-margin-top: 5rem;
+}
+
+.font-hand {
+  font-family: var(--font-hand), "Comic Sans MS", cursive;
+}
+
+/* Cinzel Decorative legibility: Tailwind's preflight resets heading weights to
+   400, which is Cinzel's thinnest cut. Default the display face to its real
+   Bold (700) and keep the slight stroke so it holds up at small sizes. */
 .font-heading {
+  font-weight: 700;
   -webkit-text-stroke: 0.3px currentColor;
   paint-order: stroke fill;
 }
 
-/* Wood grain texture overlay */
+/* Parchment texture — warm, never stark white */
+.parchment {
+  background-color: var(--color-cream);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(92, 61, 30, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(92, 61, 30, 0.04) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 80%, rgba(92, 61, 30, 0.02) 0%, transparent 60%);
+}
+
+/* Dark wood-plank texture — replaces the old flat brown gradients */
+.wood {
+  background-color: #35200f;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.22) 0 1px,
+      transparent 1px 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.025) 0 2px,
+      transparent 2px 46px
+    ),
+    linear-gradient(180deg, #4a2c17 0%, #2c1a0c 100%);
+}
+
+/* Subtle wood grain overlay for lighter surfaces */
 .wood-grain {
   position: relative;
 }
@@ -42,19 +82,19 @@ body {
   position: absolute;
   inset: 0;
   background-image: repeating-linear-gradient(
-    90deg,
-    transparent,
-    transparent 30px,
-    rgba(0, 0, 0, 0.03) 30px,
-    rgba(0, 0, 0, 0.03) 31px
-  ),
-  repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 8px,
-    rgba(0, 0, 0, 0.015) 8px,
-    rgba(0, 0, 0, 0.015) 9px
-  );
+      90deg,
+      transparent,
+      transparent 30px,
+      rgba(0, 0, 0, 0.03) 30px,
+      rgba(0, 0, 0, 0.03) 31px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 8px,
+      rgba(0, 0, 0, 0.015) 8px,
+      rgba(0, 0, 0, 0.015) 9px
+    );
   pointer-events: none;
   z-index: 1;
 }
@@ -64,37 +104,31 @@ body {
   z-index: 2;
 }
 
-/* Hero A — floating gold particles */
-.hero-particle {
-  position: absolute;
-  border-radius: 50%;
-  background: var(--color-gold);
-  opacity: 0;
-  animation: particle-float 6s ease-in-out infinite;
+/* Hand-drawn box — the irregular border-radius fakes an inked, wobbly rectangle */
+.sketch-card {
+  background-color: var(--color-cream-light);
+  /* Bolder ink line so cards read clearly on parchment (Erica's note) */
+  border: 3px solid rgba(62, 34, 21, 0.82);
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
 }
 
-@keyframes particle-float {
-  0% { opacity: 0; transform: translateY(100vh) scale(0); }
-  20% { opacity: 0.6; }
-  80% { opacity: 0.3; }
-  100% { opacity: 0; transform: translateY(-20vh) scale(1); }
+.sketch-card-alt {
+  border-radius: 15px 225px 15px 255px / 255px 15px 225px 15px;
 }
 
-/* Hero A — gold shimmer on title accent */
-.hero-shimmer {
-  animation: shimmer 3s ease-in-out infinite;
+/* Painted faire sign — blue plank, gold trim, wobbly edge */
+.paint-sign {
+  background-color: var(--color-blue);
+  border: 3px solid var(--color-gold);
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
 }
 
-@keyframes shimmer {
-  0%, 100% { filter: brightness(1); }
-  50% { filter: brightness(1.3); text-shadow: 0 0 20px rgba(212, 160, 32, 0.5); }
+/* Gentle hand-pinned tilt for notes and cards */
+.tilt-left {
+  transform: rotate(-1.2deg);
 }
 
-/* Parchment texture */
-.parchment {
-  background-color: var(--color-cream);
-  background-image:
-    radial-gradient(ellipse at 20% 50%, rgba(92, 61, 30, 0.03) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(92, 61, 30, 0.04) 0%, transparent 40%),
-    radial-gradient(ellipse at 50% 80%, rgba(92, 61, 30, 0.02) 0%, transparent 60%);
+.tilt-right {
+  transform: rotate(1.2deg);
 }
