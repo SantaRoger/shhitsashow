@@ -34,5 +34,6 @@ export const nav = [
   { label: "The Show", href: "/the-show" },
   { label: "The Cast", href: "/the-cast" },
   { label: "Schedule", href: "/schedule" },
+  { label: "Merch", href: "/merch" },
   { label: "FAQ", href: "/faq" },
 ] as const;

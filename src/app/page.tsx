@@ -247,7 +247,7 @@ export default function Home() {
       <section className="px-6 py-12">
         <div className="mx-auto max-w-5xl">
           <WallHeader title="Also Tacked to the Board" />
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <Handbill
               href="/the-show"
               title="The Show"
@@ -265,6 +265,12 @@ export default function Home() {
               title="The Schedule"
               line="Where the outhouse lands next."
               rotate="-0.6deg"
+            />
+            <Handbill
+              href="/merch"
+              title="The Merch"
+              line="Coming soon. Stu's already counting his cut."
+              rotate="0.9deg"
             />
           </div>
         </div>

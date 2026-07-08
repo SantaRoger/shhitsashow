@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/the-cast", priority: 0.7 },
     { path: "/faq", priority: 0.7 },
     { path: "/schedule", priority: 0.6 },
+    { path: "/merch", priority: 0.5 },
   ];
 
   return routes.map(({ path, priority }) => ({
